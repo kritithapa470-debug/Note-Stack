@@ -3,3 +3,8 @@
     line-height: 1.5;
     color: #333;
 }
+.header {
+    background-color: #f8f8f8;
+    padding: 20px;
+    text-align: center;
+}
