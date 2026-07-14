@@ -1,118 +1,107 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Notes Upload System </title>
-    <style>
-        body { font-family: Arial; padding: 20px; }
-        input, button { margin: 5px; padding: 8px; }
-        .note { border: 1px solid #ccc; padding: 10px; margin-top: 10px; }
-    </style>
+    <meta charset="UTF-8">
+    <title>Note Share - Daily Class Notes</title>
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<h2>Upload Your Daily Notes</h2>
+<header>
+    <h1>📚 Note Share</h1>
+    <p>Share your class notes daily. Stay consistent. Build your streak!</p>
+</header>
 
-<input type="text" id="name" placeholder="Your Name"><br>
-<input type="text" id="course" placeholder="Course Code"><br>
-<input type="date" id="date"><br>
-<input type="time" id="time"><br>
-<input type="file" id="file"><br>
+<!-- LOGIN -->
+<section id="login-section" class="card">
+    <h2>Enter your name to get started</h2>
 
-<button onclick="uploadNote()">Upload note</button>
+    <input
+        type="text"
+        id="username-input"
+        placeholder="Enter your name">
 
-<hr>
+    <button id="login-btn">Continue</button>
+</section>
 
-<h2>Search for Notes</h2>
+<!-- MAIN APP -->
+<main id="app-section" style="display:none;">
 
-<input type="text" id="s_name" placeholder="Name">
-<input type="text" id="s_course" placeholder="Course Code">
-<input type="date" id="s_date">
-<input type="time" id="s_time">
+    <!-- Profile -->
+    <div class="card">
 
-<button onclick="searchNotes()">Search</button>
+        <h2>Welcome,
+            <span id="welcome-name"></span>
+            👋
+        </h2>
 
-<hr>
+        <p>⭐ Points:
+            <span id="user-points">0</span>
+        </p>
 
-<div id="results"></div>
+        <p>🔥 Streak:
+            <span id="user-streak">0</span>
+            day(s)
+        </p>
 
-<script>
-let notes = JSON.parse(localStorage.getItem("notes")) || [];
+    </div>
 
-function uploadNote() {
-    let name = document.getElementById("name").value;
-    let course = document.getElementById("course").value;
-    let date = document.getElementById("date").value;
-    let time = document.getElementById("time").value;
-    let fileInput = document.getElementById("file");
+    <!-- Upload -->
+    <div class="card">
 
-    if (!fileInput.files[0]) {
-        alert("Please select a file");
-        return;
-    }
+        <h2>Upload Today's Note</h2>
 
-    let file = fileInput.files[0];
-    let reader = new FileReader();
+        <form id="upload-form">
 
-    reader.onload = function(e) {
-        let note = {
-            name,
-            course,
-            date,
-            time,
-            fileData: e.target.result,
-            fileName: file.name
-        };
+            <input
+                type="text"
+                id="subject-input"
+                placeholder="Subject"
+                required>
 
-        notes.push(note);
-        localStorage.setItem("notes", JSON.stringify(notes));
+            <input
+                type="file"
+                id="file-input"
+                accept=".pdf"
+                required>
 
-        alert("Uploaded successfully!");
-    };
+            <button type="submit">
+                Upload Note
+            </button>
 
-    reader.readAsDataURL(file);
-}
+        </form>
 
-function searchNotes() {
-    let s_name = document.getElementById("s_name").value;
-    let s_course = document.getElementById("s_course").value;
-    let s_date = document.getElementById("s_date").value;
-    let s_time = document.getElementById("s_time").value;
+        <p id="upload-message"></p>
 
-    let results = notes.filter(n =>
-        (s_name === "" || n.name === s_name) &&
-        (s_course === "" || n.course === s_course) &&
-        (s_date === "" || n.date === s_date) &&
-        (s_time === "" || n.time === s_time)
-    );
+    </div>
 
-    displayResults(results);
-}
+    <!-- Notes -->
+    <div class="card">
 
-function displayResults(data) {
-    let div = document.getElementById("results");
-    div.innerHTML = "";
+        <h2>📄 Shared Notes</h2>
 
-    if (data.length === 0) {
-        div.innerHTML = "<p>No results found</p>";
-        return;
-    }
+        <input
+            type="text"
+            id="filter-input"
+            placeholder="Filter by subject">
 
-    data.forEach(n => {
-        let item = document.createElement("div");
-        item.className = "note";
+        <ul id="notes-list"></ul>
 
-        item.innerHTML = `
-            <p><b>Name:</b> ${n.name}</p>
-            <p><b>Course:</b> ${n.course}</p>
-            <p><b>Date:</b> ${n.date}</p>
-            <p><b>Time:</b> ${n.time}</p>
-            <a href="${n.fileData}" target="_blank">View File (${n.fileName})</a>
-        `;
+    </div>
 
-        div.appendChild(item);
-    });
-}
-</script>
+    <!-- Leaderboard -->
+    <div class="card">
+
+        <h2>🏆 Leaderboard</h2>
+
+        <ol id="leaderboard-list"></ol>
+
+    </div>
+
+</main>
+
+<script src="script.js"></script>
 
 </body>
 </html>
