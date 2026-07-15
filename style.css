@@ -77,77 +77,60 @@ body {
 }
 
 header {
-    background: #68a5d7;
-    color: white;
-    text-align: center;
-    padding: 15px;
-    font-size: 24px;
+  background: #4a56e2;
+  color: white;
+  padding: 24px;
+  text-align: center;
 }
 
-.container {
-    padding: 20px;
+header h1 {
+  margin: 0 0 6px 0;
 }
 
-/* Search & Filter */
-.controls {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-.controls input, .controls select {
-    padding: 10px;
-    width: 100%;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-/* Cards */
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 20px;
+main, #login-section {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 0 16px;
 }
 
 .card {
-    background: white;
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    transition: 0.3s;
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
 }
 
-.card:hover {
-    transform: scale(1.03);
+input, button {
+  padding: 10px;
+  margin: 6px 4px 6px 0;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
 }
 
-.card h3 {
-    margin: 0 0 10px;
-    color: #60a9d6;
+input[type="text"], input[type="file"] {
+  width: 100%;
 }
 
-.card p {.
-    margin: 5px 0;
-    font-size: 14px;
+button {
+  background: #4a56e2;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
 }
 
-buttons {
-    margin-top: 10px;
+button:hover {
+  background: #3843b8;
 }
 
-buttons a {
-    text-decoration: none;
-    padding: 8px 12px;
-    margin-right: 5px;
-    border-radius: 5px;
-    color: white;
-    font-size: 13px;
+#notes-list li, #leaderboard-list li {
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
 }
 
-view {
-    background: #1976d2;
-}
-
-download {
-    background: #388e3c;
+#upload-message {
+  color: green;
+  font-weight: bold;
 }
