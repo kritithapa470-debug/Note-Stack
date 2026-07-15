@@ -67,3 +67,116 @@ button:hover {
   color: green;
   font-weight: bold;
 }
+.body {
+  background: #a1c6eb;
+  color: #222;
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+nav {
+  background: #bbbfef;
+  padding: 10px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 25px;
+}
+nav ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+nav ul li {
+  margin-right: 20px;
+}
+nav ul li a {
+  color: rgb(8, 202, 95);
+  text-decoration: none;
+  font-weight: bold;
+}
+nav ul li a:hover {
+  text-decoration: underline;
+  background-color: #3843b8;
+}
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f6f9;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background: #68a5d7;
+    color: white;
+    text-align: center;
+    padding: 15px;
+    font-size: 24px;
+}
+
+.container {
+    padding: 20px;
+}
+
+/* Search & Filter */
+.controls {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.controls input, .controls select {
+    padding: 10px;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Cards */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: scale(1.03);
+}
+
+.card h3 {
+    margin: 0 0 10px;
+    color: #60a9d6;
+}
+
+.card p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+.buttons {
+    margin-top: 10px;
+}
+
+.buttons a {
+    text-decoration: none;
+    padding: 8px 12px;
+    margin-right: 5px;
+    border-radius: 5px;
+    color: white;
+    font-size: 13px;
+}
+
+.view {
+    background: #1976d2;
+}
+
+.download {
+    background: #388e3c;
+}
