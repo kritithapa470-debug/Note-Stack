@@ -1,46 +1,41 @@
 <!DOCTYPE html>
-
-<html>
+<html lang="en">
 <head>
-    <title>View Notes</title>
-    <link rel="stylesheet" href="style.css">
-    <style>
-     div {
-        margin: 10px 0;
-        padding: 10px;
-        border: 1px solid #ccc;
-        size: 14px;
-     }
-     button {
-        margin: 5px;
-        padding: 8px;
-        size: 20px;
-     }
-     h1 {
-        font-size: 50px;
-        color: #080808;
-     }
-     .input {
-        font-size: 14px;
-        padding: 8px;
-        size: 50px;
-     }
+<meta charset="UTF-8">
+<title>NoteStack - View Notes</title>
+<link rel="stylesheet" href="style.css">
 
-    </style>
 </head>
+
 <body>
 
-<header>
-    <h1>View Notes</h1>
-</header>
-<div>
-<input type="text" id="search" placeholder="Search by Name">
-<input type="text" id="course" placeholder="Course Code"><br>
-<input type="date" id="date"><br>
-<input type="time" id="time"><br>
+<header>📂 NoteStack - View Notes</header>
+
+<div class="container">
+<nav>
+   <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="upload.html">Upload Notes</a></li>
+      <li><a href="view.html">View Notes</a></li>
+      </ul>
+   </ul>
+</nav>
+    <div class="controls">
+        <input type="text" id="search" placeholder="Search by 
+        COURSE CODE">
+        
+        <select id="filter">
+            <option value="">All Courses</option>
+            <option value="CS101">ENG 112</option>
+            <option value="IT202">MTH114</option>
+            <option value="MATH301">CMP174</option>
+            <option value="MATH301">CMP175</option>
+            <option value="MATH301">CMP176</option>
+            <option value="MATH301">PJR 181</option>
+        </select>
+    </div>
+    <div class="grid" id="notesContainer"></div>
+
 </div>
-<button onclick="searchNotes()">Search</button>
-
-
 </body>
 </html>
