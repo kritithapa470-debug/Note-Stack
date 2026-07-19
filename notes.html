@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Note Stack — Share Notes, Earn Points, Learn Together</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Caveat:wght@500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FAF6EC;
+    --paper-line:#E4DCC8;
+    --ink:#24273A;
+    --ink-soft:#5B5E76;
+    --ink-faint:#8C8FA3;
+    --card:#FFFFFF;
+    --highlighter:#F5C242;
+    --highlighter-ink:#5C4204;
+    --sage:#6E8B5C;
+    --sage-bg:#E7EEE1;
+    --sage-ink:#33471F;
+    --clay:#C1584A;
+    --clay-bg:#F7E4E0;
+    --clay-ink:#7A2C21;
+    --periwinkle:#7C8FC9;
+    --periwinkle-bg:#E7EBF7;
+    --periwinkle-ink:#2E3D6E;
+    --radius:14px;
+    --shadow: 0 2px 0 rgba(36,39,58,0.06), 0 6px 16px rgba(36,39,58,0.06);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      repeating-linear-gradient(180deg, transparent, transparent 35px, var(--paper-line) 36px),
+      var(--paper);
+    font-family:'Inter',sans-serif;
+    color:var(--ink);
+    min-height:100vh;
+  }
+  .app{
+    max-width:1100px;
+    margin:0 auto;
+    padding:0 32px 80px 84px;
+    position:relative;
+  }
+  .spiral{
+    position:fixed;
+    left:0; top:0; bottom:0;
+    width:56px;
+    background:linear-gradient(90deg, #EFE7D2, #F3ECDA 60%, transparent);
+    border-right:2px solid var(--paper-line);
+    z-index:5;
+  }
+  .spiral .hole{
+    position:absolute;
+    left:22px;
+    width:14px;height:14px;
+    border-radius:50%;
+    background:var(--paper);
+    box-shadow: inset 0 2px 3px rgba(36,39,58,0.35), 0 1px 0 rgba(255,255,255,0.6);
+    border:1px solid #D8CDAE;
+  }
+  header.top{
+    padding:40px 0 24px;
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:24px;
+    flex-wrap:wrap;
+    border-bottom:2px solid var(--ink);
+  }
+  .brand h1{
+    font-family:'Fraunces',serif;
+    font-weight:700;
+    font-size:44px;
+    margin:0;
+    letter-spacing:-0.5px;
+  }
+  .brand .tagline{
+    font-family:'Caveat',cursive;
+    font-size:22px;
+    color:var(--ink-soft);
+    margin-top:-6px;
+  }
+  .session{
+    display:flex;
+    align-items:center;
+    gap:14px;
+  }
+  .pill{
+    font-size:13px;
+    font-weight:600;
+    padding:6px 14px;
+    border-radius:999px;
+    background:var(--card);
+    border:1.5px solid var(--ink);
+  }
+  .pill.role-admin{ background:var(--periwinkle-bg); color:var(--periwinkle-ink); border-color:var(--periwinkle); }
+  .pill.role-student{ background:var(--sage-bg); color:var(--sage-ink); border-color:var(--sage); }
+  .points-badge{
+    display:flex; align-items:center; gap:6px;
+    background:var(--highlighter);
+    color:var(--highlighter-ink);
+    font-weight:700;
+    font-size:14px;
+    padding:6px 14px;
+    border-radius:999px;
+    border:1.5px solid var(--ink);
+    transform:rotate(-2deg);
+  }
+  button{
+    font-family:'Inter',sans-serif;
+    cursor:pointer;
+  }
+  .btn{
+    font-weight:600;
+    font-size:14px;
+    padding:9px 18px;
+    border-radius:10px;
+    border:2px solid var(--ink);
+    background:var(--card);
+    color:var(--ink);
+    transition:transform 0.08s ease, background 0.15s ease;
+  }
+  .btn:hover{ background:#F1ECDD; }
+  .btn:active{ transform:scale(0.97); }
+  .btn.primary{ background:var(--ink); color:var(--paper); }
+  .btn.primary:hover{ background:#3a3e5c; }
+  .btn.small{ padding:6px 12px; font-size:12.5px; border-radius:8px; }
+  .btn.ghost{ border-color:var(--paper-line); }
+  .btn.danger{ border-color:var(--clay); color:var(--clay-ink); }
+  .btn.danger:hover{ background:var(--clay-bg); }
+  .btn.success{ border-color:var(--sage); color:var(--sage-ink); }
+  .btn.success:hover{ background:var(--sage-bg); }
+
+  /* Login */
+  .login-wrap{
+    max-width:440px;
+    margin:64px auto;
+    background:var(--card);
+    border:2px solid var(--ink);
+    border-radius:var(--radius);
+    padding:36px 32px;
+    box-shadow:var(--shadow);
+  }
+  .login-wrap h2{
+    font-family:'Fraunces',serif;
+    font-size:26px;
+    margin:0 0 6px;
+  }
+  .login-wrap p.sub{ color:var(--ink-soft); font-size:14px; margin:0 0 24px;}
+  label{ font-size:13px; font-weight:600; color:var(--ink-soft); display:block; margin-bottom:6px; }
+  input[type=text], input[type=search], textarea, select{
+    width:100%;
+    font-family:'Inter',sans-serif;
+    font-size:14.5px;
+    padding:10px 12px;
+    border-radius:9px;
+    border:1.5px solid var(--paper-line);
+    background:#FFFDF8;
+    color:var(--ink);
+    margin-bottom:18px;
+    outline:none;
+  }
+  input:focus, textarea:focus, select:focus{ border-color:var(--ink); }
+  textarea{ resize:vertical; min-height:90px; }
+  .role-choice{ display:flex; gap:10px; margin-bottom:22px; }
+  .role-choice label{
+    flex:1; margin:0; padding:10px; text-align:center; border-radius:9px;
+    border:1.5px solid var(--paper-line); font-size:13.5px; font-weight:600; color:var(--ink-soft);
+    cursor:pointer;
+  }
+  .role-choice input{ display:none; }
+  .role-choice input:checked + span{ color:var(--ink); }
+  .role-choice label.checked{ border-color:var(--ink); background:#F1ECDD; color:var(--ink); }
+
+  /* Tabs */
+  .tabs{ display:flex; gap:8px; margin:28px 0 20px; flex-wrap:wrap; }
+  .tab{
+    font-weight:600; font-size:14px; padding:9px 16px;
+    border-radius:999px; border:1.5px solid var(--paper-line); background:transparent; color:var(--ink-soft);
+  }
+  .tab.active{ background:var(--ink); color:var(--paper); border-color:var(--ink); }
+
+  section.panel{ display:none; }
+  section.panel.active{ display:block; }
+
+  h2.section-title{
+    font-family:'Fraunces',serif;
+    font-size:24px;
+    margin:0 0 4px;
+  }
+  p.section-sub{ color:var(--ink-soft); font-size:14px; margin:0 0 20px; }
+
+  .grid-stats{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(150px,1fr));
+    gap:14px;
+    margin-bottom:28px;
+  }
+  .stat-card{
+    background:var(--card);
+    border:1.5px solid var(--paper-line);
+    border-radius:12px;
+    padding:16px 18px;
+  }
+  .stat-card .num{ font-family:'Fraunces',serif; font-size:30px; font-weight:600; }
+  .stat-card .label{ font-size:12.5px; color:var(--ink-soft); font-weight:600; text-transform:uppercase; letter-spacing:0.03em; }
+
+  /* Sticky note cards */
+  .notes-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(240px, 1fr));
+    gap:20px;
+  }
+  .sticky{
+    background:var(--card);
+    border:1.5px solid var(--paper-line);
+    border-radius:10px;
+    padding:16px 16px 14px;
+    box-shadow:var(--shadow);
+    position:relative;
+  }
+  .sticky:nth-child(3n+1){ transform:rotate(-1deg); }
+  .sticky:nth-child(3n+2){ transform:rotate(0.6deg); }
+  .sticky:nth-child(3n){ transform:rotate(-0.4deg); }
+  .sticky .subject-tag{
+    display:inline-block;
+    font-family:'Caveat',cursive;
+    font-size:17px;
+    font-weight:700;
+    background:var(--periwinkle-bg);
+    color:var(--periwinkle-ink);
+    padding:2px 10px;
+    border-radius:8px;
+    margin-bottom:8px;
+  }
+  .sticky h3{ font-family:'Fraunces',serif; font-size:17px; margin:0 0 6px; line-height:1.3; }
+  .sticky .desc{ font-size:13.5px; color:var(--ink-soft); margin:0 0 10px; line-height:1.5; }
+  .sticky .content-preview{
+    font-size:13px; color:var(--ink); background:#FBF8F1; border:1px dashed var(--paper-line);
+    border-radius:8px; padding:8px 10px; margin-bottom:10px; max-height:80px; overflow:hidden;
+    white-space:pre-wrap;
+  }
+  .sticky .meta{ display:flex; justify-content:space-between; align-items:center; font-size:12px; color:var(--ink-faint); margin-top:8px; }
+  .status-badge{ font-size:11px; font-weight:700; padding:3px 9px; border-radius:999px; text-transform:uppercase; letter-spacing:0.03em; }
+  .status-badge.pending{ background:var(--highlighter); color:var(--highlighter-ink); }
+  .status-badge.approved{ background:var(--sage-bg); color:var(--sage-ink); }
+  .status-badge.rejected{ background:var(--clay-bg); color:var(--clay-ink); }
+  .sticky .actions{ display:flex; gap:8px; margin-top:12px; }
+
+  .empty-state{
+    text-align:center; padding:48px 20px; color:var(--ink-faint);
+    border:1.5px dashed var(--paper-line); border-radius:12px;
+  }
+  .empty-state .icon{ font-size:32px; margin-bottom:8px; }
+
+  .search-row{ display:flex; gap:10px; margin-bottom:20px; flex-wrap:wrap; }
+  .search-row input{ margin-bottom:0; flex:2; min-width:180px; }
+  .search-row select{ margin-bottom:0; flex:1; min-width:140px; }
+
+  .upload-card{
+    background:var(--card); border:1.5px solid var(--ink); border-radius:var(--radius);
+    padding:22px 24px; margin-bottom:28px; box-shadow:var(--shadow);
+  }
+  .upload-card h3{ font-family:'Fraunces',serif; margin:0 0 16px; font-size:19px; }
+  .form-row{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .file-picker-row{ display:flex; align-items:center; gap:12px; margin-bottom:6px; }
+  .file-picker-btn{ display:inline-block; }
+  .file-name-display{ font-size:13.5px; color:var(--ink-soft); font-style:italic; }
+  .file-hint{ font-size:12px; color:var(--ink-faint); margin:0 0 16px; }
+  .sticky .attachment{
+    display:inline-flex; align-items:center; gap:5px; font-size:12px; color:var(--periwinkle-ink);
+    background:var(--periwinkle-bg); padding:2px 9px; border-radius:7px; margin-bottom:8px;
+  }
+  .file-preview-img{
+    display:block; width:100%; max-height:140px; object-fit:cover; border-radius:8px;
+    border:1px solid var(--paper-line); margin-bottom:10px;
+  }
+  .file-actions{ display:flex; gap:8px; margin-bottom:10px; }
+  .file-actions .btn{ text-decoration:none; display:inline-block; }
+
+  table.admin-table{ width:100%; border-collapse:collapse; font-size:13.5px; }
+  table.admin-table th{
+    text-align:left; padding:9px 10px; border-bottom:2px solid var(--ink);
+    font-size:12px; text-transform:uppercase; letter-spacing:0.03em; color:var(--ink-soft);
+  }
+  table.admin-table td{ padding:10px 10px; border-bottom:1px solid var(--paper-line); }
+  .rank-medal{ font-family:'Fraunces',serif; font-weight:700; }
+  .leaderboard-row{ display:flex; align-items:center; gap:14px; padding:12px 14px; background:var(--card); border:1.5px solid var(--paper-line); border-radius:10px; margin-bottom:8px; }
+  .leaderboard-row .rank{ font-family:'Fraunces',serif; font-size:20px; font-weight:700; width:28px; color:var(--ink-faint); }
+  .leaderboard-row.top .rank{ color:var(--highlighter-ink); }
+  .leaderboard-row .name{ flex:1; font-weight:600; }
+  .leaderboard-row .pts{ font-weight:700; color:var(--sage-ink); }
+
+  footer.notice{
+    margin-top:48px; padding-top:18px; border-top:1.5px dashed var(--paper-line);
+    font-size:12.5px; color:var(--ink-faint); text-align:center;
+  }
+  @media (max-width:640px){
+    .app{ padding:0 16px 60px 60px; }
+    .form-row{ grid-template-columns:1fr; }
+    header.top{ flex-direction:column; align-items:flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<div class="spiral" id="spiral"></div>
+
+<div class="app">
+  <header class="top">
+    <div class="brand">
+      <h1>Note Stack</h1>
+      <div class="tagline">Share notes, earn points, learn together</div>
+    </div>
+    <div class="session" id="sessionBar"></div>
+  </header>
+
+  <div id="root"></div>
+
+  <footer class="notice">Note Stack &middot; Collaborative note sharing and reward system for students &middot; SAIM College, Pokhara University &middot; This demo stores data in shared project storage — everyone using this app sees the same notes and leaderboard.</footer>
+</div>
+
+<script>
+const USERS_KEY = 'ns-users';
+const NOTES_KEY = 'ns-notes';
+let currentUser = null;
+let users = [];
+let notes = [];
+let activeTab = 'browse';
+let searchQuery = '';
+let subjectFilter = '';
+
+// Provide a lightweight storage polyfill using localStorage when
+// `window.storage` isn't available (ensures `.get` / `.set` calls work).
+if(!window.storage || typeof window.storage.get !== 'function' || typeof window.storage.set !== 'function'){
+  window.storage = {
+    async get(key /*, legacyFlag */){
+      const v = localStorage.getItem(key);
+      return v ? { value: v } : null;
+    },
+    async set(key, value /*, legacyFlag */){
+      localStorage.setItem(key, value);
+      return;
+    }
+  };
+}
+function el(html){
+  const t = document.createElement('template');
+  t.innerHTML = html.trim();
+  return t.content.firstElementChild;
+}
+
+function buildSpiral(){
+  const spiral = document.getElementById('spiral');
+  spiral.innerHTML = '';
+  const count = Math.ceil(window.innerHeight / 44) + 2;
+  for(let i=0;i<count;i++){
+    const h = el('<div class="hole"></div>');
+    h.style.top = (24 + i*44) + 'px';
+    spiral.appendChild(h);
+  }
+}
+window.addEventListener('resize', buildSpiral);
+
+async function loadAll(){
+  try{
+    const u = await window.storage.get(USERS_KEY, true);
+    users = u ? JSON.parse(u.value) : [];
+  }catch(e){ users = []; }
+  try{
+    const n = await window.storage.get(NOTES_KEY, true);
+    notes = n ? JSON.parse(n.value) : [];
+  }catch(e){ notes = []; }
+}
+
+async function saveUsers(){
+  try{ await window.storage.set(USERS_KEY, JSON.stringify(users), true); }
+  catch(e){ console.error('save users failed', e); }
+}
+async function saveNotes(){
+  try{ await window.storage.set(NOTES_KEY, JSON.stringify(notes), true); }
+  catch(e){ console.error('save notes failed', e); }
+}
+
+function findUser(username){
+  return users.find(u => u.username.toLowerCase() === username.toLowerCase());
+}
+
+async function handleLogin(username, role){
+  username = username.trim();
+  if(!username) return;
+  let u = findUser(username);
+  if(!u){
+    u = { username, role, points: 0 };
+    users.push(u);
+    await saveUsers();
+  }
+  currentUser = u;
+  activeTab = u.role === 'admin' ? 'review' : 'browse';
+  render();
+}
+
+function logout(){
+  currentUser = null;
+  render();
+}
+
+function renderSessionBar(){
+  const bar = document.getElementById('sessionBar');
+  bar.innerHTML = '';
+  if(!currentUser){ return; }
+  const rolePill = el(`<span class="pill role-${currentUser.role}">${currentUser.role === 'admin' ? 'Admin' : 'Student'} &middot; ${escapeHtml(currentUser.username)}</span>`);
+  bar.appendChild(rolePill);
+  if(currentUser.role === 'student'){
+    const pts = el(`<span class="points-badge">&#9733; ${currentUser.points} pts</span>`);
+    bar.appendChild(pts);
+  }
+  const logoutBtn = el(`<button class="btn small ghost">Switch user</button>`);
+  logoutBtn.onclick = logout;
+  bar.appendChild(logoutBtn);
+}
+
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function renderLogin(){
+  const root = document.getElementById('root');
+  root.innerHTML = '';
+  const wrap = el(`
+    <div class="login-wrap">
+      <h2>Welcome back</h2>
+      <p class="sub">Enter a username to jump in. New names create a fresh account — pick admin to review notes, or student to upload and earn points.</p>
+      <label>Username</label>
+      <input type="text" id="loginUsername" placeholder="e.g. shikshika_r" />
+      <label>I am a</label>
+      <div class="role-choice">
+        <label id="roleStudentLbl" class="checked">
+          <input type="radio" name="role" value="student" checked>
+          <span>Student</span>
+        </label>
+        <label id="roleAdminLbl">
+          <input type="radio" name="role" value="admin">
+          <span>Admin</span>
+        </label>
+      </div>
+      <button class="btn primary" id="loginBtn" style="width:100%;">Continue</button>
+    </div>
+  `);
+  root.appendChild(wrap);
+  const studentLbl = wrap.querySelector('#roleStudentLbl');
+  const adminLbl = wrap.querySelector('#roleAdminLbl');
+  wrap.querySelectorAll('input[name=role]').forEach(r => {
+    r.addEventListener('change', () => {
+      studentLbl.classList.toggle('checked', r.value === 'student' && r.checked);
+      adminLbl.classList.toggle('checked', r.value === 'admin' && r.checked);
+    });
+  });
+  wrap.querySelector('#loginBtn').onclick = () => {
+    const username = wrap.querySelector('#loginUsername').value;
+    const role = wrap.querySelector('input[name=role]:checked').value;
+    handleLogin(username, role);
+  };
+  wrap.querySelector('#loginUsername').addEventListener('keydown', (e) => {
+    if(e.key === 'Enter') wrap.querySelector('#loginBtn').click();
+  });
+}
+
+function subjectsList(){
+  const s = new Set(notes.map(n => n.subject).filter(Boolean));
+  return Array.from(s).sort();
+}
+
+function renderStudentView(){
+  const root = document.getElementById('root');
+  root.innerHTML = '';
+
+  const tabs = el(`
+    <div class="tabs">
+      <button class="tab" data-tab="browse">Browse notes</button>
+      <button class="tab" data-tab="upload">Upload a note</button>
+      <button class="tab" data-tab="mine">My uploads</button>
+      <button class="tab" data-tab="leaderboard">Leaderboard</button>
+    </div>
+  `);
+  root.appendChild(tabs);
+  tabs.querySelectorAll('.tab').forEach(t => {
+    if(t.dataset.tab === activeTab) t.classList.add('active');
+    t.onclick = () => { activeTab = t.dataset.tab; render(); };
+  });
+
+  const panel = el('<div></div>');
+  root.appendChild(panel);
+
+  if(activeTab === 'browse') panel.appendChild(renderBrowsePanel());
+  if(activeTab === 'upload') panel.appendChild(renderUploadPanel());
+  if(activeTab === 'mine') panel.appendChild(renderMinePanel());
+  if(activeTab === 'leaderboard') panel.appendChild(renderLeaderboardPanel());
+}
+
+function renderBrowsePanel(){
+  const panel = el('<section class="panel active"></section>');
+  panel.appendChild(el(`<h2 class="section-title">Shared notes</h2>`));
+  panel.appendChild(el(`<p class="section-sub">Approved notes from every student on Note Stack. Search or filter by subject.</p>`));
+
+  const searchRow = el(`
+    <div class="search-row">
+      <input type="search" id="searchInput" placeholder="Search by title or keyword" value="${escapeHtml(searchQuery)}" />
+      <select id="subjectSelect"><option value="">All subjects</option></select>
+    </div>
+  `);
+  panel.appendChild(searchRow);
+  const subjSel = searchRow.querySelector('#subjectSelect');
+  subjectsList().forEach(s => {
+    const opt = el(`<option value="${escapeHtml(s)}">${escapeHtml(s)}</option>`);
+    if(s === subjectFilter) opt.selected = true;
+    subjSel.appendChild(opt);
+  });
+  searchRow.querySelector('#searchInput').addEventListener('input', (e) => {
+    searchQuery = e.target.value;
+    refreshBrowseResults();
+  });
+  subjSel.addEventListener('change', (e) => {
+    subjectFilter = e.target.value;
+    refreshBrowseResults();
+  });
+
+  const grid = el('<div class="notes-grid" id="browseGrid"></div>');
+  panel.appendChild(grid);
+  fillBrowseGrid(grid);
+  return panel;
+}
+
+function matchesFilters(n){
+  const approved = n.status === 'approved';
+  const q = searchQuery.trim().toLowerCase();
+  const matchesQ = !q || n.title.toLowerCase().includes(q) || n.subject.toLowerCase().includes(q) || (n.description||'').toLowerCase().includes(q);
+  const matchesSubj = !subjectFilter || n.subject === subjectFilter;
+  return approved && matchesQ && matchesSubj;
+}
+
+function fillBrowseGrid(grid){
+  const results = notes.filter(matchesFilters).sort((a,b) => b.createdAt - a.createdAt);
+  grid.innerHTML = '';
+  if(results.length === 0){
+    grid.appendChild(el(`<div class="empty-state" style="grid-column:1/-1;"><div class="icon">&#128218;</div>No notes match yet. Try a different search, or be the first to upload one for this topic.</div>`));
+    return;
+  }
+  results.forEach(n => grid.appendChild(renderNoteCard(n, {mode:'browse'})));
+}
+
+function refreshBrowseResults(){
+  const grid = document.getElementById('browseGrid');
+  if(grid) fillBrowseGrid(grid);
+}
+
+function renderNoteCard(n, opts){
+  const card = el(`
+    <div class="sticky">
+      <span class="subject-tag">${escapeHtml(n.subject)}</span>
+      <h3>${escapeHtml(n.title)}</h3>
+      <p class="desc">${escapeHtml(n.description || '')}</p>
+      ${n.fileName ? `<span class="attachment">&#128206; ${escapeHtml(n.fileName)}</span>` : ''}
+      ${n.fileData && n.fileType && n.fileType.startsWith('image/') ? `<img src="${n.fileData}" class="file-preview-img" />` : ''}
+      <div class="content-preview">${escapeHtml(n.content).slice(0,220)}${n.content.length>220 ? '…' : ''}</div>
+      ${n.fileData ? `
+      <div class="file-actions">
+        <a href="${n.fileData}" target="_blank" rel="noopener" class="btn small ghost">Open file</a>
+        <a href="${n.fileData}" download="${escapeHtml(n.fileName || 'note-file')}" class="btn small ghost">Download</a>
+      </div>` : ''}
+      <div class="meta">
+        <span>by ${escapeHtml(n.uploader)}</span>
+        <span class="status-badge ${n.status}">${n.status}</span>
+      </div>
+    </div>
+  `);
+  if(opts.mode === 'admin-review'){
+    const actions = el('<div class="actions"></div>');
+    const approveBtn = el(`<button class="btn small success">Approve (+5 pts)</button>`);
+    approveBtn.onclick = () => approveNote(n.id);
+    const rejectBtn = el(`<button class="btn small danger">Reject</button>`);
+    rejectBtn.onclick = () => rejectNote(n.id);
+    actions.appendChild(approveBtn);
+    actions.appendChild(rejectBtn);
+    card.appendChild(actions);
+  }
+  return card;
+}
+
+function renderUploadPanel(){
+  const panel = el('<section class="panel active"></section>');
+  panel.appendChild(el(`<h2 class="section-title">Upload a note</h2>`));
+  panel.appendChild(el(`<p class="section-sub">Submit your notes for admin review. Approved notes earn 5 points and become visible to every student.</p>`));
+
+  const card = el(`
+    <div class="upload-card">
+      <h3>Note details</h3>
+      <div class="form-row">
+        <div>
+          <label>Title</label>
+          <input type="text" id="noteTitle" placeholder="e.g. Chapter 4 — Thermodynamics summary" />
+        </div>
+        <div>
+          <label>Subject</label>
+          <input type="text" id="noteSubject" placeholder="e.g. Physics" />
+        </div>
+      </div>
+      <label>Attach a file</label>
+      <div class="file-picker-row">
+        <label for="noteFile" class="btn ghost small file-picker-btn">&#128193; Choose file</label>
+        <input type="file" id="noteFile" accept=".txt,.md,.markdown,.pdf,image/*" style="display:none;" />
+        <span id="fileNameDisplay" class="file-name-display">No file chosen</span>
+      </div>
+      <p class="file-hint">.txt or .md files auto-fill the content box below. Images and PDFs attach as-is so classmates can open or download them (up to 4 MB).</p>
+      <div id="imagePreviewWrap"></div>
+
+      <label>Short description (optional)</label>
+      <input type="text" id="noteDesc" placeholder="Brief summary or context" />
+
+      <label>Note content</label>
+      <textarea id="noteContent" placeholder="Paste or type your notes here, or choose a .txt / .md file above"></textarea>
+      <button class="btn primary" id="submitNoteBtn">Submit for review</button>
+      <span id="uploadMsg" style="margin-left:12px; font-size:13px; color:var(--sage-ink); font-weight:600;"></span>
+    </div>
+  `);
+  panel.appendChild(card);
+
+  let selectedFile = null;
+  const MAX_FILE_BYTES = 4 * 1024 * 1024;
+
+  function readFileAsDataURL(file){
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (evt) => resolve(evt.target.result);
+      reader.onerror = () => reject(reader.error);
+      reader.readAsDataURL(file);
+    });
+  }
+  function readFileAsText(file){
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (evt) => resolve(evt.target.result);
+      reader.onerror = () => reject(reader.error);
+      reader.readAsText(file);
+    });
+  }
+
+  card.querySelector('#noteFile').addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    const display = card.querySelector('#fileNameDisplay');
+    const previewWrap = card.querySelector('#imagePreviewWrap');
+    previewWrap.innerHTML = '';
+    if(!file){
+      display.textContent = 'No file chosen';
+      selectedFile = null;
+      return;
+    }
+    if(file.size > MAX_FILE_BYTES){
+      display.textContent = 'File too large (max 4 MB) — not attached';
+      display.style.color = 'var(--clay-ink)';
+      selectedFile = null;
+      e.target.value = '';
+      return;
+    }
+    selectedFile = file;
+    display.style.color = '';
+    display.textContent = file.name;
+
+    if(file.type.startsWith('image/')){
+      const dataUrl = await readFileAsDataURL(file);
+      previewWrap.appendChild(el(`<img src="${dataUrl}" class="file-preview-img" />`));
+    }
+    const isText = /\.(txt|md|markdown)$/i.test(file.name);
+    if(isText){
+      const text = await readFileAsText(file);
+      card.querySelector('#noteContent').value = text;
+    }
+  });
+
+  card.querySelector('#submitNoteBtn').onclick = async () => {
+    const title = card.querySelector('#noteTitle').value.trim();
+    const subject = card.querySelector('#noteSubject').value.trim();
+    const description = card.querySelector('#noteDesc').value.trim();
+    const content = card.querySelector('#noteContent').value.trim();
+    const msg = card.querySelector('#uploadMsg');
+    const submitBtn = card.querySelector('#submitNoteBtn');
+
+    if(!title || !subject){
+      msg.style.color = 'var(--clay-ink)';
+      msg.textContent = 'Title and subject are required.';
+      return;
+    }
+    if(!content && !selectedFile){
+      msg.style.color = 'var(--clay-ink)';
+      msg.textContent = 'Add note content or attach a file.';
+      return;
+    }
+
+    submitBtn.disabled = true;
+    msg.style.color = 'var(--ink-soft)';
+    msg.textContent = selectedFile ? 'Uploading file…' : 'Submitting…';
+
+    let fileName = '', fileData = '', fileType = '';
+    try{
+      if(selectedFile){
+        fileName = selectedFile.name;
+        fileType = selectedFile.type;
+        fileData = await readFileAsDataURL(selectedFile);
+      }
+    }catch(err){
+      submitBtn.disabled = false;
+      msg.style.color = 'var(--clay-ink)';
+      msg.textContent = 'Could not read the file — try again.';
+      return;
+    }
+
+    const note = {
+      id: 'note_' + Date.now() + '_' + Math.random().toString(36).slice(2,7),
+      title, subject, description,
+      content: content || '(see attached file)',
+      fileName, fileData, fileType,
+      uploader: currentUser.username,
+      status: 'pending',
+      createdAt: Date.now()
+    };
+    notes.push(note);
+    await saveNotes();
+    submitBtn.disabled = false;
+    msg.style.color = 'var(--sage-ink)';
+    msg.textContent = 'Submitted — waiting for admin review.';
+    card.querySelector('#noteTitle').value = '';
+    card.querySelector('#noteSubject').value = '';
+    card.querySelector('#noteDesc').value = '';
+    card.querySelector('#noteContent').value = '';
+    card.querySelector('#noteFile').value = '';
+    card.querySelector('#fileNameDisplay').textContent = 'No file chosen';
+    card.querySelector('#imagePreviewWrap').innerHTML = '';
+    selectedFile = null;
+  };
+
+  return panel;
+}
+
+function renderMinePanel(){
+  const panel = el('<section class="panel active"></section>');
+  panel.appendChild(el(`<h2 class="section-title">My uploads</h2>`));
+  panel.appendChild(el(`<p class="section-sub">Track the review status of notes you've submitted.</p>`));
+  const mine = notes.filter(n => n.uploader === currentUser.username).sort((a,b) => b.createdAt - a.createdAt);
+  const grid = el('<div class="notes-grid"></div>');
+  panel.appendChild(grid);
+  if(mine.length === 0){
+    grid.appendChild(el(`<div class="empty-state" style="grid-column:1/-1;"><div class="icon">&#128221;</div>You haven't uploaded any notes yet. Head to "Upload a note" to share your first one.</div>`));
+  }else{
+    mine.forEach(n => grid.appendChild(renderNoteCard(n, {mode:'mine'})));
+  }
+  return panel;
+}
+
+function renderLeaderboardPanel(){
+  const panel = el('<section class="panel active"></section>');
+  panel.appendChild(el(`<h2 class="section-title">Leaderboard</h2>`));
+  panel.appendChild(el(`<p class="section-sub">Ranked by reward points earned from approved notes.</p>`));
+  const ranked = users.filter(u => u.role === 'student').sort((a,b) => b.points - a.points);
+  if(ranked.length === 0){
+    panel.appendChild(el(`<div class="empty-state"><div class="icon">&#127942;</div>No student accounts yet.</div>`));
+    return panel;
+  }
+  ranked.forEach((u, i) => {
+    const row = el(`
+      <div class="leaderboard-row ${i < 3 ? 'top' : ''}">
+        <span class="rank">${i+1}</span>
+        <span class="name">${escapeHtml(u.username)}${u.username===currentUser.username ? ' (you)' : ''}</span>
+        <span class="pts">${u.points} pts</span>
+      </div>
+    `);
+    panel.appendChild(row);
+  });
+  return panel;
+}
+
+function renderAdminView(){
+  const root = document.getElementById('root');
+  root.innerHTML = '';
+
+  const tabs = el(`
+    <div class="tabs">
+      <button class="tab" data-tab="review">Review queue</button>
+      <button class="tab" data-tab="users">Manage users</button>
+      <button class="tab" data-tab="all-notes">All notes</button>
+    </div>
+  `);
+  root.appendChild(tabs);
+  tabs.querySelectorAll('.tab').forEach(t => {
+    if(t.dataset.tab === activeTab) t.classList.add('active');
+    t.onclick = () => { activeTab = t.dataset.tab; render(); };
+  });
+
+  const panel = el('<div></div>');
+  root.appendChild(panel);
+
+  const pending = notes.filter(n => n.status === 'pending').length;
+  const approved = notes.filter(n => n.status === 'approved').length;
+  const totalUsers = users.length;
+
+  const stats = el(`
+    <div class="grid-stats">
+      <div class="stat-card"><div class="num">${pending}</div><div class="label">Pending review</div></div>
+      <div class="stat-card"><div class="num">${approved}</div><div class="label">Approved notes</div></div>
+      <div class="stat-card"><div class="num">${notes.length}</div><div class="label">Total notes</div></div>
+      <div class="stat-card"><div class="num">${totalUsers}</div><div class="label">Registered users</div></div>
+    </div>
+  `);
+  panel.appendChild(stats);
+
+  if(activeTab === 'review') panel.appendChild(renderReviewPanel());
+  if(activeTab === 'users') panel.appendChild(renderUsersPanel());
+  if(activeTab === 'all-notes') panel.appendChild(renderAllNotesPanel());
+}
+
+function renderReviewPanel(){
+  const panel = el('<section class="panel active"></section>');
+  panel.appendChild(el(`<h2 class="section-title">Notes awaiting review</h2>`));
+  panel.appendChild(el(`<p class="section-sub">Approve to publish a note and award 5 points to its uploader, or reject it.</p>`));
+  const pending = notes.filter(n => n.status === 'pending').sort((a,b) => a.createdAt - b.createdAt);
+  const grid = el('<div class="notes-grid"></div>');
+  panel.appendChild(grid);
+  if(pending.length === 0){
+    grid.appendChild(el(`<div class="empty-state" style="grid-column:1/-1;"><div class="icon">&#9989;</div>Nothing pending — the queue is clear.</div>`));
+  }else{
+    pending.forEach(n => grid.appendChild(renderNoteCard(n, {mode:'admin-review'})));
+  }
+  return panel;
+}
+
+function renderUsersPanel(){
+  const panel = el('<section class="panel active"></section>');
+  panel.appendChild(el(`<h2 class="section-title">Registered users</h2>`));
+  panel.appendChild(el(`<p class="section-sub">All students and admins who have logged into Note Stack.</p>`));
+  const table = el(`
+    <table class="admin-table">
+      <thead><tr><th>Username</th><th>Role</th><th>Points</th><th>Notes uploaded</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  `);
+  const tbody = table.querySelector('tbody');
+  users.forEach(u => {
+    const count = notes.filter(n => n.uploader === u.username).length;
+    tbody.appendChild(el(`
+      <tr>
+        <td>${escapeHtml(u.username)}</td>
+        <td><span class="pill role-${u.role}" style="font-size:11px; padding:3px 10px;">${u.role}</span></td>
+        <td>${u.points}</td>
+        <td>${count}</td>
+      </tr>
+    `));
+  });
+  panel.appendChild(table);
+  return panel;
+}
+
+function renderAllNotesPanel(){
+  const panel = el('<section class="panel active"></section>');
+  panel.appendChild(el(`<h2 class="section-title">All notes</h2>`));
+  panel.appendChild(el(`<p class="section-sub">Full history across every status.</p>`));
+  const grid = el('<div class="notes-grid"></div>');
+  panel.appendChild(grid);
+  const all = notes.slice().sort((a,b) => b.createdAt - a.createdAt);
+  if(all.length === 0){
+    grid.appendChild(el(`<div class="empty-state" style="grid-column:1/-1;"><div class="icon">&#128193;</div>No notes have been submitted yet.</div>`));
+  }else{
+    all.forEach(n => grid.appendChild(renderNoteCard(n, {mode:'all'})));
+  }
+  return panel;
+}
+
+async function approveNote(id){
+  const n = notes.find(x => x.id === id);
+  if(!n) return;
+  n.status = 'approved';
+  const u = findUser(n.uploader);
+  if(u) u.points += 5;
+  await saveNotes();
+  await saveUsers();
+  render();
+}
+
+async function rejectNote(id){
+  const n = notes.find(x => x.id === id);
+  if(!n) return;
+  n.status = 'rejected';
+  await saveNotes();
+  render();
+}
+
+function render(){
+  renderSessionBar();
+  if(!currentUser){
+    renderLogin();
+    return;
+  }
+  if(currentUser.role === 'admin') renderAdminView();
+  else renderStudentView();
+}
+
+(async function init(){
+  buildSpiral();
+  await loadAll();
+  render();
+})();
+</script>
+</body>
+</html>
