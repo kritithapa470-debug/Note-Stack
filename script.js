@@ -26,3 +26,26 @@ function el(html){
   t.innerHTML = html.trim();
   return t.content.firstElementChild;
 }
+
+function buildSpiral(){
+  const spiral = document.getElementById('spiral');
+  spiral.innerHTML = '';
+  const count = Math.ceil(window.innerHeight / 44) + 2;
+  for(let i=0;i<count;i++){
+    const h = el('<div class="hole"></div>');
+    h.style.top = (24 + i*44) + 'px';
+    spiral.appendChild(h);
+  }
+}
+window.addEventListener('resize', buildSpiral);
+
+async function loadAll(){
+  try{
+    const u = await window.storage.get(USERS_KEY, true);
+    users = u ? JSON.parse(u.value) : [];
+  }catch(e){ users = []; }
+  try{
+    const n = await window.storage.get(NOTES_KEY, true);
+    notes = n ? JSON.parse(n.value) : [];
+  }catch(e){ notes = []; }
+}
