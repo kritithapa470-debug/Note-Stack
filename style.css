@@ -68,4 +68,70 @@
     margin:0;
     letter-spacing:-0.5px;
   }
-  
+ .brand .tagline{
+    font-family:'Caveat',cursive;
+    font-size:22px;
+    color:var(--ink-soft);
+    margin-top:-6px;
+  }
+  .session{
+    display:flex;
+    align-items:center;
+    gap:14px;
+  }
+  .pill{
+    font-size:13px;
+    font-weight:600;
+    padding:6px 14px;
+    border-radius:999px;
+    background:var(--card);
+    border:1.5px solid var(--ink);
+  }
+  .pill.role-admin{ background:var(--periwinkle-bg); color:var(--periwinkle-ink); border-color:var(--periwinkle); }
+  .pill.role-student{ background:var(--sage-bg); color:var(--sage-ink); border-color:var(--sage); }
+  .points-badge{
+    display:flex; align-items:center; gap:6px;
+    background:var(--highlighter);
+    color:var(--highlighter-ink);
+    font-weight:700;
+    font-size:14px;
+    padding:6px 14px;
+    border-radius:999px;
+    border:1.5px solid var(--ink);
+    transform:rotate(-2deg);
+  }
+  button{
+    font-family:'Inter',sans-serif;
+    cursor:pointer;
+  }
+  .btn{
+    font-weight:600;
+    font-size:14px;
+    padding:9px 18px;
+    border-radius:10px;
+    border:2px solid var(--ink);
+    background:var(--card);
+    color:var(--ink);
+    transition:transform 0.08s ease, background 0.15s ease;
+  }
+  .btn:hover{ background:#F1ECDD; }
+  .btn:active{ transform:scale(0.97); }
+  .btn.primary{ background:var(--ink); color:var(--paper); }
+  .btn.primary:hover{ background:#3a3e5c; }
+  .btn.small{ padding:6px 12px; font-size:12.5px; border-radius:8px; }
+  .btn.ghost{ border-color:var(--paper-line); }
+  .btn.danger{ border-color:var(--clay); color:var(--clay-ink); }
+  .btn.danger:hover{ background:var(--clay-bg); }
+  .btn.success{ border-color:var(--sage); color:var(--sage-ink); }
+  .btn.success:hover{ background:var(--sage-bg); }
+
+  /* Login */
+  .login-wrap{
+    max-width:440px;
+    margin:64px auto;
+    background:var(--card);
+    border:2px solid var(--ink);
+    border-radius:var(--radius);
+    padding:36px 32px;
+    box-shadow:var(--shadow);
+  }
