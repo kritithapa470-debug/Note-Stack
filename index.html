@@ -1,102 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Note Share - Daily Class Notes</title>
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Note Stack — Share Notes, Earn Points, Learn Together</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Caveat:wght@500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- ================= LOGIN PAGE (notebook page concept) ================= -->
-  <section id="login-section" class="screen">
-    <div class="notebook-page">
-      <div class="spiral" aria-hidden="true"></div>
+<div class="spiral" id="spiral"></div>
 
-      <div class="page-content">
-        <p class="eyebrow">Welcome Back!</p>
-        <h1 class="brand">Note Share</h1>
-        <p class="tagline">Missed a class? Someone already wrote it down.</p>
+<div class="app">
+  <header class="top">
+    <div class="brand">
+      <h1>Note Stack</h1>
+      <div class="tagline">Share notes, earn points, learn together</div>
+    </div>
+    <div class="session" id="sessionBar"></div>
+  </header>
 
-        <div class="login-fields">
-          <label for="username-input">Name</label>
-          <input type="text" id="username-input" placeholder="e.g. Aayush Sharma" />
+  <div id="root"></div>
 
-          <label for="email-input">Email</label>
-          <input type="email" id="email-input" placeholder="e.g. aayush@college.edu" />
+  <footer class="notice">Note Stack &middot; Collaborative note sharing and reward system for students &middot; SAIM College, Pokhara University &middot; This demo stores data in shared project storage — everyone using this app sees the same notes and leaderboard.</footer>
+</div>
 
-          <button id="login-btn">Open my notebook →</button>
-          <p id="login-message"></p>
-        </div>
-
-        <p class="page-footnote">🔥 daily streaks · 📎 pdf notes · 🤝 shared with classmates</p>
+<!-- Note Viewer Modal -->
+<div class="note-viewer-overlay" id="noteViewerOverlay">
+  <div class="note-viewer-modal">
+    <div class="note-viewer-header">
+      <h3 id="viewerTitle">Note Viewer</h3>
+      <div class="note-viewer-actions">
+        <a href="#" id="viewerDownload" class="btn small ghost" download>Download</a>
+        <button class="btn small ghost" id="closeViewer">Close</button>
       </div>
     </div>
-  </section>
-
-  <!-- ================= HOME PAGE (hidden until logged in) ================= -->
-  <div id="app-section" class="screen" style="display:none;">
-
-    <header>
-      <h1>📚 Note Share</h1>
-      <nav id="main-nav">
-        <button class="nav-btn active" data-tab="home-tab">🏠 Home</button>
-        <button class="nav-btn" data-tab="upload-tab">⬆️ Upload Notes</button>
-        <button class="nav-btn" data-tab="notes-tab">📄 Access Notes</button>
-        <button class="nav-btn" data-tab="profile-tab">👤 Profile</button>
-      </nav>
-    </header>
-
-    <main>
-
-      <!-- ---- HOME TAB ---- -->
-      <div class="tab-content" id="home-tab">
-        <div class="card">
-          <h2>Welcome, <span id="welcome-name"></span> 👋</h2>
-          <p>⭐ Points: <span id="home-points">0</span> &nbsp; | &nbsp; 🔥 Streak: <span id="home-streak">0</span> day(s)</p>
-        </div>
-        <div class="card">
-          <h2>🏆 Leaderboard</h2>
-          <ol id="leaderboard-list"></ol>
-        </div>
+    <div class="note-viewer-content" id="viewerContent">
+      <div class="note-viewer-loading">
+        <div class="spinner"></div>
+        <div>Loading note...</div>
       </div>
-
-      <!-- ---- UPLOAD TAB ---- -->
-      <div class="tab-content" id="upload-tab" style="display:none;">
-        <div class="card">
-          <h2>Upload Today's Note</h2>
-          <form id="upload-form">
-            <input type="text" id="subject-input" placeholder="Subject (e.g. Physics)" required />
-            <input type="file" id="file-input" accept="application/pdf" required />
-            <button type="submit">Upload Note</button>
-          </form>
-          <p id="upload-message"></p>
-        </div>
-      </div>
-
-      <!-- ---- ACCESS NOTES TAB ---- -->
-      <div class="tab-content" id="notes-tab" style="display:none;">
-        <div class="card">
-          <h2>📄 All Shared Notes</h2>
-          <input type="text" id="filter-input" placeholder="Filter by subject..." />
-          <ul id="notes-list"></ul>
-        </div>
-      </div>
-
-      <!-- ---- PROFILE TAB ---- -->
-      <div class="tab-content" id="profile-tab" style="display:none;">
-        <div class="card">
-          <h2>👤 Your Profile</h2>
-          <p><strong>Name:</strong> <span id="profile-name"></span></p>
-          <p><strong>Email:</strong> <span id="profile-email"></span></p>
-          <p><strong>Points:</strong> <span id="profile-points"></span></p>
-          <p><strong>Streak:</strong> <span id="profile-streak"></span> day(s)</p>
-          <button id="logout-btn">Log Out</button>
-        </div>
-      </div>
-
-    </main>
+    </div>
   </div>
+</div>
 
-  <script src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>

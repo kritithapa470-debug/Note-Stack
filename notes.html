@@ -298,10 +298,438 @@
     margin-top:48px; padding-top:18px; border-top:1.5px dashed var(--paper-line);
     font-size:12.5px; color:var(--ink-faint); text-align:center;
   }
+
+  /* Contact page styles */
+  .contact-wrap{
+    max-width:600px;
+    margin:0 auto;
+    background:var(--card);
+    border:1.5px solid var(--ink);
+    border-radius:var(--radius);
+    padding:28px 32px;
+    box-shadow:var(--shadow);
+  }
+  .contact-wrap h2{
+    font-family:'Fraunces',serif;
+    font-size:26px;
+    margin:0 0 6px;
+  }
+  .contact-wrap .intro{
+    color:var(--ink-soft);
+    font-size:14px;
+    margin:0 0 24px;
+    line-height:1.6;
+  }
+  .contact-info{
+    background:var(--sage-bg);
+    border:1.5px solid var(--sage);
+    border-radius:10px;
+    padding:16px 18px;
+    margin-bottom:24px;
+  }
+  .contact-info .label{
+    font-size:12px;
+    font-weight:700;
+    color:var(--sage-ink);
+    text-transform:uppercase;
+    letter-spacing:0.03em;
+    margin-bottom:4px;
+  }
+  .contact-info .value{
+    font-size:15px;
+    color:var(--ink);
+    margin-bottom:12px;
+  }
+  .contact-info .value:last-child{
+    margin-bottom:0;
+  }
+  .contact-form label{
+    display:block;
+    font-size:13px;
+    font-weight:600;
+    color:var(--ink-soft);
+    margin-bottom:6px;
+  }
+  .contact-form input[type=text],
+  .contact-form input[type=email],
+  .contact-form textarea{
+    width:100%;
+    font-family:'Inter',sans-serif;
+    font-size:14.5px;
+    padding:10px 12px;
+    border-radius:9px;
+    border:1.5px solid var(--paper-line);
+    background:#FFFDF8;
+    color:var(--ink);
+    margin-bottom:16px;
+    outline:none;
+  }
+  .contact-form input:focus,
+  .contact-form textarea:focus{
+    border-color:var(--ink);
+  }
+  .contact-form textarea{
+    resize:vertical;
+    min-height:120px;
+  }
+  .contact-success{
+    background:var(--sage-bg);
+    color:var(--sage-ink);
+    padding:12px 16px;
+    border-radius:8px;
+    font-size:14px;
+    font-weight:600;
+    margin-top:16px;
+    display:none;
+  }
+  .contact-success.show{
+    display:block;
+  }
+
+  /* Rewards page styles */
+  .rewards-header{
+    text-align:center;
+    background:var(--highlighter);
+    border:2px solid var(--ink);
+    border-radius:var(--radius);
+    padding:24px;
+    margin-bottom:28px;
+    box-shadow:var(--shadow);
+    transform:rotate(-1deg);
+  }
+  .rewards-header .your-points{
+    font-family:'Fraunces',serif;
+    font-size:48px;
+    font-weight:700;
+    color:var(--highlighter-ink);
+    margin:0;
+  }
+  .rewards-header .label{
+    font-size:14px;
+    font-weight:600;
+    color:var(--highlighter-ink);
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+  }
+  .rewards-info{
+    background:var(--card);
+    border:1.5px solid var(--paper-line);
+    border-radius:12px;
+    padding:20px 24px;
+    margin-bottom:24px;
+  }
+  .rewards-info h3{
+    font-family:'Fraunces',serif;
+    font-size:18px;
+    margin:0 0 12px;
+  }
+  .rewards-info ul{
+    margin:0;
+    padding-left:20px;
+    color:var(--ink-soft);
+    font-size:14px;
+    line-height:1.8;
+  }
+  .rewards-history{
+    background:var(--card);
+    border:1.5px solid var(--paper-line);
+    border-radius:12px;
+    padding:20px 24px;
+  }
+  .rewards-history h3{
+    font-family:'Fraunces',serif;
+    font-size:18px;
+    margin:0 0 16px;
+  }
+  .history-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:12px 14px;
+    background:#FBF8F1;
+    border:1px solid var(--paper-line);
+    border-radius:8px;
+    margin-bottom:8px;
+  }
+  .history-item .action{
+    font-size:14px;
+    color:var(--ink);
+  }
+  .history-item .points{
+    font-weight:700;
+    font-size:15px;
+    color:var(--sage-ink);
+  }
+  .history-item .points.positive{
+    color:var(--sage-ink);
+  }
+
+  /* Note Viewer Modal */
+  .note-viewer-overlay{
+    position:fixed;
+    top:0; left:0; right:0; bottom:0;
+    background:rgba(36,39,58,0.85);
+    z-index:1000;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    backdrop-filter:blur(4px);
+  }
+  .note-viewer-overlay.active{
+    display:flex;
+  }
+  .note-viewer-modal{
+    background:var(--card);
+    border:2px solid var(--ink);
+    border-radius:var(--radius);
+    width:100%;
+    max-width:1000px;
+    max-height:90vh;
+    display:flex;
+    flex-direction:column;
+    box-shadow:0 8px 40px rgba(36,39,58,0.4);
+  }
+  .note-viewer-header{
+    padding:16px 20px;
+    border-bottom:1.5px solid var(--paper-line);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+  }
+  .note-viewer-header h3{
+    font-family:'Fraunces',serif;
+    font-size:18px;
+    margin:0;
+    flex:1;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+  .note-viewer-actions{
+    display:flex;
+    gap:8px;
+    align-items:center;
+  }
+  .note-viewer-content{
+    flex:1;
+    overflow:auto;
+    position:relative;
+    background:#F5F5F5;
+  }
+  .note-viewer-iframe{
+    width:100%;
+    height:100%;
+    min-height:500px;
+    border:none;
+    display:block;
+  }
+  .note-viewer-loading{
+    position:absolute;
+    top:50%; left:50%;
+    transform:translate(-50%, -50%);
+    text-align:center;
+    color:var(--ink-soft);
+  }
+  .note-viewer-loading .spinner{
+    width:40px;
+    height:40px;
+    border:4px solid var(--paper-line);
+    border-top-color:var(--ink);
+    border-radius:50%;
+    animation:spin 0.8s linear infinite;
+    margin:0 auto 12px;
+  }
+  @keyframes spin{
+    to{ transform:rotate(360deg); }
+  }
+  .note-viewer-error{
+    padding:40px 20px;
+    text-align:center;
+    color:var(--clay-ink);
+  }
+  .note-viewer-error .icon{
+    font-size:48px;
+    margin-bottom:12px;
+  }
+
+  /* Responsive design improvements */
+  @media (max-width:960px){
+    .notes-grid{
+      grid-template-columns:repeat(auto-fill, minmax(200px, 1fr));
+      gap:16px;
+    }
+  }
+
+  @media (max-width:768px){
+    .app{
+      padding:0 20px 60px 68px;
+    }
+    .spiral{
+      width:48px;
+    }
+    .spiral .hole{
+      left:17px;
+      width:12px;
+      height:12px;
+    }
+    .brand h1{
+      font-size:36px;
+    }
+    .brand .tagline{
+      font-size:19px;
+    }
+    .tabs{
+      gap:6px;
+    }
+    .tab{
+      font-size:13px;
+      padding:8px 14px;
+    }
+    .notes-grid{
+      grid-template-columns:repeat(auto-fill, minmax(180px, 1fr));
+      gap:14px;
+    }
+    .search-row{
+      flex-direction:column;
+    }
+    .search-row input,
+    .search-row select{
+      flex:1;
+      width:100%;
+      min-width:100%;
+    }
+    .grid-stats{
+      grid-template-columns:repeat(2, 1fr);
+      gap:12px;
+    }
+    .stat-card .num{
+      font-size:24px;
+    }
+    .contact-wrap{
+      padding:24px 20px;
+    }
+    .rewards-header{
+      padding:20px;
+    }
+    .rewards-header .your-points{
+      font-size:40px;
+    }
+    .note-viewer-modal{
+      max-width:95%;
+      max-height:85vh;
+    }
+    .note-viewer-header{
+      padding:14px 16px;
+    }
+    .note-viewer-header h3{
+      font-size:16px;
+    }
+    .note-viewer-iframe{
+      min-height:400px;
+    }
+  }
+
   @media (max-width:640px){
-    .app{ padding:0 16px 60px 60px; }
-    .form-row{ grid-template-columns:1fr; }
-    header.top{ flex-direction:column; align-items:flex-start; }
+    .app{
+      padding:0 16px 60px 60px;
+    }
+    .form-row{
+      grid-template-columns:1fr;
+    }
+    header.top{
+      flex-direction:column;
+      align-items:flex-start;
+      gap:16px;
+    }
+    .session{
+      flex-wrap:wrap;
+      width:100%;
+    }
+    .pill{
+      font-size:12px;
+      padding:5px 12px;
+    }
+    .points-badge{
+      font-size:13px;
+      padding:5px 12px;
+    }
+    .brand h1{
+      font-size:32px;
+    }
+    .brand .tagline{
+      font-size:17px;
+    }
+    .notes-grid{
+      grid-template-columns:1fr;
+      gap:16px;
+    }
+    .sticky{
+      transform:rotate(0deg) !important;
+    }
+    .grid-stats{
+      grid-template-columns:1fr;
+      gap:10px;
+    }
+    table.admin-table{
+      font-size:12px;
+    }
+    table.admin-table th,
+    table.admin-table td{
+      padding:8px 6px;
+    }
+    .leaderboard-row{
+      padding:10px 12px;
+      gap:10px;
+    }
+    .leaderboard-row .rank{
+      font-size:18px;
+      width:24px;
+    }
+    .file-actions{
+      flex-direction:column;
+    }
+    .file-actions .btn{
+      width:100%;
+      text-align:center;
+    }
+  }
+
+  @media (max-width:480px){
+    .app{
+      padding:0 12px 50px 56px;
+    }
+    .spiral{
+      width:44px;
+    }
+    .brand h1{
+      font-size:28px;
+    }
+    .brand .tagline{
+      font-size:16px;
+    }
+    header.top{
+      padding:32px 0 20px;
+    }
+    .upload-card,
+    .contact-wrap,
+    .rewards-info,
+    .rewards-history{
+      padding:18px 16px;
+    }
+    .btn{
+      font-size:13px;
+      padding:8px 16px;
+    }
+    .btn.small{
+      font-size:12px;
+      padding:5px 10px;
+    }
+    footer.notice{
+      font-size:11px;
+      line-height:1.5;
+    }
   }
 </style>
 </head>
@@ -321,6 +749,25 @@
   <div id="root"></div>
 
   <footer class="notice">Note Stack &middot; Collaborative note sharing and reward system for students &middot; SAIM College, Pokhara University &middot; This demo stores data in shared project storage — everyone using this app sees the same notes and leaderboard.</footer>
+</div>
+
+<!-- Note Viewer Modal -->
+<div class="note-viewer-overlay" id="noteViewerOverlay">
+  <div class="note-viewer-modal">
+    <div class="note-viewer-header">
+      <h3 id="viewerTitle">Note Viewer</h3>
+      <div class="note-viewer-actions">
+        <a href="#" id="viewerDownload" class="btn small ghost" download>Download</a>
+        <button class="btn small ghost" id="closeViewer">Close</button>
+      </div>
+    </div>
+    <div class="note-viewer-content" id="viewerContent">
+      <div class="note-viewer-loading">
+        <div class="spinner"></div>
+        <div>Loading note...</div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -483,7 +930,9 @@ function renderStudentView(){
       <button class="tab" data-tab="browse">Browse notes</button>
       <button class="tab" data-tab="upload">Upload a note</button>
       <button class="tab" data-tab="mine">My uploads</button>
+      <button class="tab" data-tab="rewards">Rewards</button>
       <button class="tab" data-tab="leaderboard">Leaderboard</button>
+      <button class="tab" data-tab="contact">Contact</button>
     </div>
   `);
   root.appendChild(tabs);
@@ -498,7 +947,9 @@ function renderStudentView(){
   if(activeTab === 'browse') panel.appendChild(renderBrowsePanel());
   if(activeTab === 'upload') panel.appendChild(renderUploadPanel());
   if(activeTab === 'mine') panel.appendChild(renderMinePanel());
+  if(activeTab === 'rewards') panel.appendChild(renderRewardsPanel());
   if(activeTab === 'leaderboard') panel.appendChild(renderLeaderboardPanel());
+  if(activeTab === 'contact') panel.appendChild(renderContactPanel());
 }
 
 function renderBrowsePanel(){
@@ -566,17 +1017,23 @@ function renderNoteCard(n, opts){
       ${n.fileName ? `<span class="attachment">&#128206; ${escapeHtml(n.fileName)}</span>` : ''}
       ${n.fileData && n.fileType && n.fileType.startsWith('image/') ? `<img src="${n.fileData}" class="file-preview-img" />` : ''}
       <div class="content-preview">${escapeHtml(n.content).slice(0,220)}${n.content.length>220 ? '…' : ''}</div>
-      ${n.fileData ? `
       <div class="file-actions">
-        <a href="${n.fileData}" target="_blank" rel="noopener" class="btn small ghost">Open file</a>
-        <a href="${n.fileData}" download="${escapeHtml(n.fileName || 'note-file')}" class="btn small ghost">Download</a>
-      </div>` : ''}
+        <button class="btn small primary" data-note-id="${n.id}">View Note</button>
+        ${n.fileData ? `<a href="${n.fileData}" download="${escapeHtml(n.fileName || 'note-file')}" class="btn small ghost">Download</a>` : ''}
+      </div>
       <div class="meta">
         <span>by ${escapeHtml(n.uploader)}</span>
         <span class="status-badge ${n.status}">${n.status}</span>
       </div>
     </div>
   `);
+  
+  // Add click handler for View Note button
+  const viewBtn = card.querySelector('[data-note-id]');
+  if(viewBtn){
+    viewBtn.onclick = () => openNoteViewer(n);
+  }
+  
   if(opts.mode === 'admin-review'){
     const actions = el('<div class="actions"></div>');
     const approveBtn = el(`<button class="btn small success">Approve (+5 pts)</button>`);
@@ -781,6 +1238,132 @@ function renderLeaderboardPanel(){
   return panel;
 }
 
+function renderRewardsPanel(){
+  const panel = el('<section class="panel active"></section>');
+  
+  // Header with current points
+  const header = el(`
+    <div class="rewards-header">
+      <div class="label">Your Total Points</div>
+      <div class="your-points">&#9733; ${currentUser.points}</div>
+    </div>
+  `);
+  panel.appendChild(header);
+
+  // How to earn points section
+  const info = el(`
+    <div class="rewards-info">
+      <h3>How to Earn Points</h3>
+      <ul>
+        <li><strong>+5 points</strong> when you upload a note (awarded after admin approval)</li>
+        <li>Share quality notes to help your classmates and climb the leaderboard</li>
+        <li>The more approved notes you contribute, the more points you earn</li>
+      </ul>
+    </div>
+  `);
+  panel.appendChild(info);
+
+  // Rewards history
+  const history = el(`
+    <div class="rewards-history">
+      <h3>Your Rewards History</h3>
+      <div id="historyList"></div>
+    </div>
+  `);
+  panel.appendChild(history);
+
+  const historyList = history.querySelector('#historyList');
+  const myApprovedNotes = notes.filter(n => n.uploader === currentUser.username && n.status === 'approved');
+  
+  if(myApprovedNotes.length === 0){
+    historyList.appendChild(el(`
+      <div class="empty-state">
+        <div class="icon">&#128176;</div>
+        No rewards yet. Upload and get notes approved to start earning points!
+      </div>
+    `));
+  } else {
+    // Sort by newest first
+    myApprovedNotes.sort((a, b) => b.createdAt - a.createdAt).forEach(n => {
+      const item = el(`
+        <div class="history-item">
+          <div class="action">Note approved: "${escapeHtml(n.title)}"</div>
+          <div class="points positive">+5 pts</div>
+        </div>
+      `);
+      historyList.appendChild(item);
+    });
+  }
+
+  return panel;
+}
+
+function renderContactPanel(){
+  const panel = el('<section class="panel active"></section>');
+  
+  const wrap = el(`
+    <div class="contact-wrap">
+      <h2>Contact Us</h2>
+      <p class="intro">Have questions, feedback, or need help with Note Stack? We're here to assist you. Reach out through any of the methods below.</p>
+      
+      <div class="contact-info">
+        <div class="label">Institution</div>
+        <div class="value">SAIM College, Pokhara University</div>
+        
+        <div class="label">Email</div>
+        <div class="value">support@notestack.edu.np</div>
+        
+        <div class="label">Hours</div>
+        <div class="value">Monday - Friday: 9:00 AM - 5:00 PM</div>
+      </div>
+
+      <form class="contact-form" id="contactForm">
+        <label>Your Name</label>
+        <input type="text" id="contactName" placeholder="Enter your full name" required />
+        
+        <label>Email Address</label>
+        <input type="email" id="contactEmail" placeholder="your.email@example.com" required />
+        
+        <label>Message</label>
+        <textarea id="contactMessage" placeholder="Tell us how we can help you..." required></textarea>
+        
+        <button type="submit" class="btn primary" style="width:100%;">Send Message</button>
+        
+        <div class="contact-success" id="contactSuccess">
+          ✓ Thank you! Your message has been received. We'll get back to you soon.
+        </div>
+      </form>
+    </div>
+  `);
+  
+  panel.appendChild(wrap);
+  
+  // Handle form submission
+  const form = wrap.querySelector('#contactForm');
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name = wrap.querySelector('#contactName').value;
+    const email = wrap.querySelector('#contactEmail').value;
+    const message = wrap.querySelector('#contactMessage').value;
+    
+    // In a real app, this would send to a backend
+    console.log('Contact form submitted:', { name, email, message, from: currentUser.username });
+    
+    // Show success message
+    wrap.querySelector('#contactSuccess').classList.add('show');
+    
+    // Clear form
+    form.reset();
+    
+    // Hide success message after 5 seconds
+    setTimeout(() => {
+      wrap.querySelector('#contactSuccess').classList.remove('show');
+    }, 5000);
+  });
+  
+  return panel;
+}
+
 function renderAdminView(){
   const root = document.getElementById('root');
   root.innerHTML = '';
@@ -904,6 +1487,119 @@ function render(){
   if(currentUser.role === 'admin') renderAdminView();
   else renderStudentView();
 }
+
+// Note Viewer Functions
+function openNoteViewer(note){
+  const overlay = document.getElementById('noteViewerOverlay');
+  const title = document.getElementById('viewerTitle');
+  const content = document.getElementById('viewerContent');
+  const downloadBtn = document.getElementById('viewerDownload');
+  
+  // Set title
+  title.textContent = note.title || 'Note Viewer';
+  
+  // Configure download button
+  if(note.fileData){
+    downloadBtn.href = note.fileData;
+    downloadBtn.download = note.fileName || 'note-file';
+    downloadBtn.style.display = 'inline-block';
+  } else {
+    downloadBtn.style.display = 'none';
+  }
+  
+  // Show loading
+  content.innerHTML = '<div class="note-viewer-loading"><div class="spinner"></div><div>Loading note...</div></div>';
+  
+  // Show overlay
+  overlay.classList.add('active');
+  
+  // Load content based on file type
+  setTimeout(() => {
+    if(!note.fileData){
+      // Text-only note
+      content.innerHTML = `
+        <div style="padding:24px; background:var(--card); height:100%; overflow:auto;">
+          <h3 style="font-family:'Fraunces',serif; margin:0 0 8px;">${escapeHtml(note.title)}</h3>
+          <p style="color:var(--ink-soft); font-size:13px; margin:0 0 16px;"><strong>Subject:</strong> ${escapeHtml(note.subject)}</p>
+          ${note.description ? `<p style="color:var(--ink-soft); font-size:13px; margin:0 0 16px;"><strong>Description:</strong> ${escapeHtml(note.description)}</p>` : ''}
+          <div style="white-space:pre-wrap; line-height:1.6; font-size:14px;">${escapeHtml(note.content)}</div>
+        </div>
+      `;
+    } else if(note.fileType && note.fileType.startsWith('image/')){
+      // Image file
+      content.innerHTML = `
+        <div style="padding:24px; background:var(--card); height:100%; overflow:auto; text-align:center;">
+          <h3 style="font-family:'Fraunces',serif; margin:0 0 16px;">${escapeHtml(note.title)}</h3>
+          <img src="${note.fileData}" style="max-width:100%; height:auto; border-radius:8px; box-shadow:var(--shadow);" />
+        </div>
+      `;
+    } else if(note.fileType === 'application/pdf'){
+      // PDF file - use iframe
+      content.innerHTML = `<iframe src="${note.fileData}" class="note-viewer-iframe" title="${escapeHtml(note.fileName || 'PDF Viewer')}"></iframe>`;
+    } else if(note.fileType && (note.fileType.startsWith('text/') || note.fileType === 'application/json')){
+      // Text file
+      fetch(note.fileData)
+        .then(response => response.text())
+        .then(text => {
+          content.innerHTML = `
+            <div style="padding:24px; background:var(--card); height:100%; overflow:auto;">
+              <h3 style="font-family:'Fraunces',serif; margin:0 0 16px;">${escapeHtml(note.title)}</h3>
+              <pre style="white-space:pre-wrap; line-height:1.6; font-size:13px; font-family:monospace; background:#F5F5F5; padding:16px; border-radius:8px; overflow-x:auto;">${escapeHtml(text)}</pre>
+            </div>
+          `;
+        })
+        .catch(err => {
+          content.innerHTML = `
+            <div class="note-viewer-error">
+              <div class="icon">⚠️</div>
+              <div style="font-size:16px; font-weight:600; margin-bottom:8px;">Could not load file</div>
+              <div style="font-size:14px;">The file might be corrupted or in an unsupported format.</div>
+            </div>
+          `;
+        });
+    } else {
+      // Unknown file type - try iframe anyway
+      content.innerHTML = `<iframe src="${note.fileData}" class="note-viewer-iframe" title="${escapeHtml(note.fileName || 'File Viewer')}"></iframe>`;
+    }
+  }, 100);
+}
+
+function closeNoteViewer(){
+  const overlay = document.getElementById('noteViewerOverlay');
+  overlay.classList.remove('active');
+  
+  // Clear content after animation
+  setTimeout(() => {
+    const content = document.getElementById('viewerContent');
+    content.innerHTML = '<div class="note-viewer-loading"><div class="spinner"></div><div>Loading note...</div></div>';
+  }, 300);
+}
+
+// Set up viewer close handlers
+document.addEventListener('DOMContentLoaded', () => {
+  const closeBtn = document.getElementById('closeViewer');
+  const overlay = document.getElementById('noteViewerOverlay');
+  
+  if(closeBtn){
+    closeBtn.onclick = closeNoteViewer;
+  }
+  
+  if(overlay){
+    // Close when clicking outside modal
+    overlay.onclick = (e) => {
+      if(e.target === overlay){
+        closeNoteViewer();
+      }
+    };
+    
+    // Close on Escape key
+    document.addEventListener('keydown', (e) => {
+      if(e.key === 'Escape' && overlay.classList.contains('active')){
+        closeNoteViewer();
+      }
+    });
+  }
+});
 
 (async function init(){
   buildSpiral();
